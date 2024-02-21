@@ -1,8 +1,10 @@
+import { Grid, ScrollArea, Theme, ThemePanel } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import '@radix-ui/themes/styles.css';
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +21,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Theme appearance="light" accentColor="violet">
-          <main>{children}</main>
-          <ThemePanel/>
+        <Theme appearance="dark" accentColor="red" grayColor="slate">
+          <div className="grid h-screen grid-rows-[auto_1fr_auto]">
+            <NavBar />
+            <ScrollArea type="always" scrollbars="vertical" >
+              <main className="overflow-hidden">{children}</main>
+            </ScrollArea>
+            {/* <ThemePanel /> */}
+            <Footer />
+          </div>
         </Theme>
       </body>
     </html>

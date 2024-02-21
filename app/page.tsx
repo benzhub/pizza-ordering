@@ -1,9 +1,9 @@
-import { Heading } from "@radix-ui/themes";
+import { Container, Heading } from "@radix-ui/themes";
 
 export default function Home() {
   return (
-    <main>
+    <Container>
       <Heading as="h1">Pizza Ordering</Heading>
-    </main>
+    </Container>
   );
 }
