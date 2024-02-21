@@ -23,4 +23,11 @@ npm install json-server --save-dev
 https://www.npmjs.com/package/@tanstack/react-query
 ```bash
 npm i @tanstack/react-query
+npm install @tanstack/react-query-devtools
+```
+
+### React Loading Skeleton
+https://www.npmjs.com/package/react-loading-skeleton
+```bash
+npm i react-loading-skeleton
 ```
