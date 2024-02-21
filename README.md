@@ -12,3 +12,9 @@ https://www.npmjs.com/package/react-icons
 ```bash
 npm i react-icons
 ```
+
+### json-server (Fake API)
+https://www.npmjs.com/package/json-server
+```bash
+npm install json-server --save-dev
+```
