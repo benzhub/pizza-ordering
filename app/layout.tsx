@@ -25,7 +25,7 @@ export default function RootLayout({
           <div className="grid h-screen grid-rows-[auto_1fr_auto]">
             <div className="fixed top-0 w-full z-50"><NavBar /></div>
             <ScrollArea type="always" scrollbars="vertical" >
-              <main className="overflow-hidden mt-16">{children}</main>
+              <main className="overflow-hidden my-24">{children}</main>
             </ScrollArea>
             {/* <ThemePanel /> */}
             <div className="fixed bottom-0 w-full z-50"><Footer /></div>
