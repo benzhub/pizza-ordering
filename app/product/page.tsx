@@ -1,10 +1,13 @@
 import { Container, Heading } from "@radix-ui/themes";
-import React from "react";
+import ProductList from "./_components/ProductList";
 
 const ProductPage = () => {
   return (
     <Container>
-      <Heading as="h3">ProductPage</Heading>
+      <Heading className="p-4" as="h3">
+        Pizzas List
+      </Heading>
+      <ProductList />
     </Container>
   );
 };
