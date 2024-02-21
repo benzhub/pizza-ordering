@@ -23,12 +23,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <Theme appearance="dark" accentColor="red" grayColor="slate">
           <div className="grid h-screen grid-rows-[auto_1fr_auto]">
-            <NavBar />
+            <div className="fixed top-0 w-full z-50"><NavBar /></div>
             <ScrollArea type="always" scrollbars="vertical" >
-              <main className="overflow-hidden">{children}</main>
+              <main className="overflow-hidden mt-16">{children}</main>
             </ScrollArea>
             {/* <ThemePanel /> */}
-            <div className="fixed bottom-0 w-full"><Footer /></div>
+            <div className="fixed bottom-0 w-full z-50"><Footer /></div>
           </div>
         </Theme>
       </body>
