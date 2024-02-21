@@ -18,3 +18,9 @@ https://www.npmjs.com/package/json-server
 ```bash
 npm install json-server --save-dev
 ```
+
+### React Query
+https://www.npmjs.com/package/@tanstack/react-query
+```bash
+npm i @tanstack/react-query
+```
