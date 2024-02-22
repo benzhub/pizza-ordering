@@ -14,17 +14,29 @@ datasource db {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(255) // varchar(191)
-  description String   @db.Text
-  price       Int   
-  thumb       String   @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  // assignedToUserId String?  @db.VarChar(255)
-  // assignedToUser   User?    @relation(fields: [assignedToUserId], references: [id])
+  id                Int      @id @default(autoincrement())
+  title             String   @db.VarChar(255) // varchar(191)
+  description       String   @db.Text
+  price             Int
+  thumb             String   @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  assignedToOrderId String?  @db.VarChar(255)
+  assignedToOrder   Order?    @relation(fields: [assignedToOrderId], references: [id])
 
-  // @@index([assignedToUserId])
+
+  @@index([assignedToOrderId])
+}
+
+model Order {
+  id               String    @id @default(cuid())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  assignedToUserId String?   @db.VarChar(255)
+  assignedToUser   User?     @relation(fields: [assignedToUserId], references: [id])
+  assignedProduct  Product[]
+
+  @@index([assignedToUserId])
 }
 
 model Account {
@@ -58,15 +70,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  phone         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  // assignedOrders Product[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  phone          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  assignedOrders Order[]
 }
 
 model VerificationToken {
