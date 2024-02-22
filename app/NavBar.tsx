@@ -19,7 +19,7 @@ const NavBar = () => {
     <nav className="bg-[var(--tomato-a10)] p-4">
       <Container>
         <Flex justify="between">
-          <FaPizzaSlice size="32" />
+          <Link href="/"><FaPizzaSlice size="32" /></Link>
           <div className="flex justify-between items-center gap-4">
             <ul className="hidden lg:flex justify-center items-center gap-4 font-bold text-xl">
               {links.map((link) => (

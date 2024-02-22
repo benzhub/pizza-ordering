@@ -17,6 +17,18 @@ const Footer = () => {
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
 
+  const linkUrl = quantity < 1
+    ? "/product" 
+    : currentPath === "/cart" 
+      ? "/checkout"
+      : "/cart"
+  
+  const linkName = quantity < 1
+  ? "Products List" 
+  : currentPath === "/cart" 
+    ? "Order Products"
+    : "Open Cart"
+
   useEffect(() => {
     setQuantity(cartTotalQuantity);
     setPrice(cartTotalPrice);
@@ -32,10 +44,10 @@ const Footer = () => {
           </div>
           <Button size={{ initial: "3", lg: "4" }}>
             <Link
-              href={currentPath === "/cart" ? "/checkout" : "/cart"}
+              href={linkUrl}
               className="flex items-center gap-2"
             >
-              {currentPath === "/cart" ? "Order Products" : "Open Cart"}{" "}
+              {linkName}
               <FaCircleArrowRight />
             </Link>
           </Button>
