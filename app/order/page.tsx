@@ -1,5 +1,4 @@
 import { Container, Heading } from "@radix-ui/themes";
-import React from "react";
 
 const OrderPage = () => {
   return (

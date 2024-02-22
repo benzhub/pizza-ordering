@@ -1,5 +1,5 @@
 "use client";
-import { deleteItem } from "@/lib/features/carts/cartsSlice";
+import { deleteItem } from "@/lib/features/cart/cartsSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { Button } from "@radix-ui/themes";
 

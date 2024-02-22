@@ -2,19 +2,12 @@
 import {
   decreaseItemQuantity,
   increaseItemQuantity,
-} from "@/lib/features/carts/cartsSlice";
+} from "@/lib/features/cart/cartsSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { Button, Flex } from "@radix-ui/themes";
+import { Button, Flex, Text } from "@radix-ui/themes";
 
-export const UpdateItemQuantity = ({
-  productId,
-  currentQuantity,
-}: {
-  productId: string;
-  currentQuantity: number;
-}) => {
+export const UpdateItemQuantity = ({productId, currentQuantity}: {productId: string; currentQuantity: number}) => {
   const dispatch = useAppDispatch();
-
   return (
     <Flex align="center" gap="2">
       <Button
@@ -26,7 +19,7 @@ export const UpdateItemQuantity = ({
       >
         -
       </Button>
-      <span>{currentQuantity}</span>
+      <Text>{currentQuantity}</Text>
       <Button
         variant="soft"
         color="indigo"

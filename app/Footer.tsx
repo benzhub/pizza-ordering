@@ -1,10 +1,7 @@
 "use client";
-import {
-  getTotalCartPrice,
-  getTotalCartQuantity,
-} from "@/lib/features/carts/cartsSlice";
+import { getTotalCartPrice, getTotalCartQuantity } from "@/lib/features/cart/cartsSlice";
 import { useAppSelector } from "@/lib/hooks";
-import { Button, Container, Flex } from "@radix-ui/themes";
+import { Button, Container, Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,25 +14,40 @@ const Footer = () => {
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
 
+  const linkUrl = quantity < 1
+    ? "/product" 
+    : currentPath === "/cart" 
+      ? "/checkout"
+      : "/cart"
+  
+  const linkName = quantity < 1
+  ? "Products List" 
+  : currentPath === "/cart" 
+    ? "Order Products"
+    : "Open Cart"
+
   useEffect(() => {
     setQuantity(cartTotalQuantity);
     setPrice(cartTotalPrice);
   }, [cartTotalQuantity, cartTotalPrice]);
+
+  const formattedTotalPrice = new Intl.NumberFormat("en-US").format(price)
+  const formattedTotalQuantity = new Intl.NumberFormat("en-US").format(quantity)
 
   return (
     <div className="bg-[var(--red-a10)] p-4">
       <Container>
         <Flex justify="between" align="center">
           <div className="flex gap-2 font-bold">
-            <p>{quantity} PIZZAS</p>
-            <p>${price}</p>
+            <Text>{formattedTotalQuantity} PIZZAS</Text>
+            <Text>${formattedTotalPrice}</Text>
           </div>
           <Button size={{ initial: "3", lg: "4" }}>
             <Link
-              href={currentPath === "/cart" ? "/checkout" : "/cart"}
+              href={linkUrl}
               className="flex items-center gap-2"
             >
-              {currentPath === "/cart" ? "Order Products" : "Open Cart"}{" "}
+              {linkName}
               <FaCircleArrowRight />
             </Link>
           </Button>
