@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryClientProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <StoreProvider>
             <Theme appearance="dark" accentColor="red" grayColor="slate">
               <div className="grid h-screen grid-rows-[auto_1fr_auto]">

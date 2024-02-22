@@ -11,3 +11,9 @@
     --foreground-rgb: 255, 255, 255;
   }
 }
+
+@layer base {
+  button:hover {
+    @apply cursor-pointer;
+  }
+}
