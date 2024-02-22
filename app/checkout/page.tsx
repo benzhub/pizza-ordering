@@ -68,7 +68,7 @@ const Checkout = () => {
                     placeholder="Your Address"
                     defaultValue={address}
                   />
-                  {!position?.latitude && !position?.longitude && (
+                  {!position?.coords.latitude && !position?.coords.longitude && (
                     <Button
                       disabled={isLoadingAddress}
                       onClick={handleGetPosition}

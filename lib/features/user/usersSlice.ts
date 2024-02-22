@@ -63,7 +63,7 @@ export const fetchAddress = createAsyncThunk<
 
     // 3) Then we return an object with the data that we are interested in.
     // Payload of the FULFILLED state
-    return { position, address } as unknown as FetchAddressResponse;
+    return { position: positionObj, address } as unknown as FetchAddressResponse;
   } catch (error) {
     return rejectWithValue(
       "There was a problem getting your address. Make sure to fill this field!"
