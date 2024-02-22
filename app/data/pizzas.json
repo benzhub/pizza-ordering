@@ -1,76 +1,65 @@
 {
   "pizzas": [
     {
-      "title": "pizza 1",
-      "description": "pizza 1",
+      "title": "Delicious Pepperoni Pizza",
+      "description": "A classic pizza topped with savory pepperoni slices, melted mozzarella cheese, and tangy tomato sauce.",
       "price": 299,
       "thumb": "https://images.pexels.com/photos/367915/pexels-photo-367915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 2",
-      "description": "pizza 2",
-      "price": 289,
+      "title": "Supreme Veggie Delight Pizza",
+      "description": "A garden-fresh pizza loaded with colorful bell peppers, onions, mushrooms, olives, and juicy tomatoes.",
+      "price": 279,
       "thumb": "https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 3",
-      "description": "pizza 3",
-      "price": 399,
+      "title": "Sizzling BBQ Chicken Pizza",
+      "description": "Tender grilled chicken breast smothered in tangy barbecue sauce, paired with caramelized onions and gooey cheddar cheese.",
+      "price": 319,
       "thumb": "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 1",
-      "description": "pizza 1",
-      "price": 299,
+      "title": "Mouthwatering Margherita Pizza",
+      "description": "An Italian classic featuring fresh basil leaves, sliced tomatoes, and creamy mozzarella cheese atop a thin crust brushed with olive oil.",
+      "price": 249,
       "thumb": "https://images.pexels.com/photos/367915/pexels-photo-367915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 2",
-      "description": "pizza 2",
-      "price": 289,
+      "title": "Spicy Hawaiian Luau Pizza",
+      "description": "A tropical twist on pizza with sweet pineapple chunks, smoky ham, and a kick of spicy jalapenos.",
+      "price": 329,
       "thumb": "https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 3",
-      "description": "pizza 3",
-      "price": 399,
+      "title": "Savory Mediterranean Delight Pizza",
+      "description": "Transport yourself to the Mediterranean with this pizza featuring sun-dried tomatoes, feta cheese, kalamata olives, and fresh basil.",
+      "price": 269,
       "thumb": "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 1",
-      "description": "pizza 1",
-      "price": 299,
+      "title": "Cheesy Buffalo Chicken Pizza",
+      "description": "A zesty pizza loaded with spicy buffalo chicken, creamy ranch dressing, and melted mozzarella cheese.",
+      "price": 289,
       "thumb": "https://images.pexels.com/photos/367915/pexels-photo-367915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 2",
-      "description": "pizza 2",
-      "price": 289,
+      "title": "Gourmet Truffle Mushroom Pizza",
+      "description": "Indulge in the earthy flavors of truffle oil, wild mushrooms, and creamy ricotta cheese on a crispy pizza crust.",
+      "price": 309,
       "thumb": "https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 3",
-      "description": "pizza 3",
-      "price": 399,
+      "title": "Classic Four Cheese Pizza",
+      "description": "A cheese lover's dream featuring a blend of gooey mozzarella, sharp cheddar, creamy ricotta, and tangy parmesan cheeses.",
+      "price": 259,
       "thumb": "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "title": "pizza 1",
-      "description": "pizza 1",
-      "price": 299,
+      "title": "Deluxe Meat Lovers Pizza",
+      "description": "A carnivore's delight loaded with hearty portions of pepperoni, sausage, bacon, and seasoned ground beef.",
+      "price": 289,
       "thumb": "https://images.pexels.com/photos/367915/pexels-photo-367915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-      "title": "pizza 2",
-      "description": "pizza 2",
-      "price": 289,
-      "thumb": "https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-      "title": "pizza 3",
-      "description": "pizza 3",
-      "price": 399,
-      "thumb": "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
   ]
+  
 }
