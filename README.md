@@ -31,3 +31,11 @@ https://www.npmjs.com/package/react-loading-skeleton
 ```bash
 npm i react-loading-skeleton
 ```
+
+### Redux Toolkit
+https://redux-toolkit.js.org/
+https://redux-toolkit.js.org/usage/nextjs
+```bash
+npm install @reduxjs/toolkit
+npm install react-redux
+```
