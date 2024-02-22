@@ -11,6 +11,7 @@ const NavBar = () => {
   const links = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/product" },
+    { label: "Carts", href: "/cart" },
     { label: "Checkout", href: "/checkout" },
     { label: "Orders", href: "/order" },
   ];
