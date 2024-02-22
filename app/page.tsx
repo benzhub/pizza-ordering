@@ -1,19 +1,20 @@
 "use client";
-import { useAppSelector } from "@/lib/hooks";
 import { Button, Container, Flex, Heading, Text } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CreateUser } from "./CreateUser";
 
 export default function Home() {
   const [username, setUsername] = useState("");
-  const user = useAppSelector((state) => state.user);
+  const { status, data: session } = useSession();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    if (user.username) {
-      setUsername(user.username);
+  useEffect(()=>{
+    if (status === "authenticated" && session?.user?.name) {
+      setIsAuthenticated(true);
+      setUsername(session.user.name)
     }
-  }, [user.username]);
+  }, [session?.user?.name, status])
 
   return (
     <Container>
@@ -24,7 +25,7 @@ export default function Home() {
         <Heading as="h3" align="center" size={{ initial: "4" }}>
           Straight out of the oven, straight to you.
         </Heading>
-        {user.username ? (
+        {isAuthenticated ? (
           <Button radius="full" size="4">
             <Link href="/product">Continue Ordering, {username}</Link>
           </Button>
@@ -33,7 +34,7 @@ export default function Home() {
             <Text align="center">
               &#128400; Welcome! Please start by telling us your name:
             </Text>
-            <CreateUser username={username} setUsername={setUsername} />
+            <Link href="/api/auth/signin"><Button size="4" radius="full">Login</Button></Link>
           </>
         )}
       </Flex>
