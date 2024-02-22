@@ -5,7 +5,7 @@ const ProductPage = () => {
   return (
     <Container>
       <Heading className="p-4" as="h3">
-        Pizzas List
+        Products List
       </Heading>
       <ProductList />
     </Container>

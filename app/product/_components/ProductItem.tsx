@@ -4,12 +4,14 @@ import Image from "next/image";
 import { Button, Flex, Heading } from "@radix-ui/themes";
 import {
   addItem,
-  getCurrentQuantityById
+  getCurrentQuantityById,
 } from "@/lib/features/carts/cartsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Pizza } from "./PizzaType";
+import { UpdateItemQuantity } from "@/app/cart/_components/UpdateItemQuantity";
+import { DeleteItem } from "@/app/cart/_components/DeleteItem";
 
-export const ProductItem = ({ pizza }: { pizza: Pizza; }) => {
+export const ProductItem = ({ pizza }: { pizza: Pizza }) => {
   const { id, title, description, thumb, price } = pizza;
   const dispatch = useAppDispatch();
   const currentQuantity = useAppSelector(getCurrentQuantityById(id));
@@ -33,7 +35,8 @@ export const ProductItem = ({ pizza }: { pizza: Pizza; }) => {
           src={thumb}
           alt={title}
           width={100}
-          height={100} />
+          height={100}
+        />
       </div>
       <div className="p-2">
         <Heading as="h4" size={{ initial: "3", lg: "5" }}>
@@ -42,7 +45,7 @@ export const ProductItem = ({ pizza }: { pizza: Pizza; }) => {
         <p className="text-sm capitalize italic text-stone-500 pt-1 pb-2">
           {description}
         </p>
-        <Flex justify="between">
+        <Flex justify="between" align="center">
           <span className="inline-block font-bold text-lg">$ {price}</span>
           {!isInCart && (
             <Button
@@ -52,6 +55,12 @@ export const ProductItem = ({ pizza }: { pizza: Pizza; }) => {
             >
               Add to Cart
             </Button>
+          )}
+          {isInCart && (
+            <div className="flex gap-3 lg:gap-5">
+              <UpdateItemQuantity productId={id} currentQuantity={currentQuantity} />
+              <DeleteItem productId={id} />
+            </div>
           )}
         </Flex>
       </div>
