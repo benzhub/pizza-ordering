@@ -39,3 +39,26 @@ https://redux-toolkit.js.org/usage/nextjs
 npm install @reduxjs/toolkit
 npm install react-redux
 ```
+
+### Primsa
+https://next-auth.js.org/v3/adapters/prisma
+```bash
+npm install @prisma/client @next-auth/prisma-adapter@canary
+npm install prisma --save-dev
+```
+
+### Auth.js (NextAuth)
+https://authjs.dev/getting-started/providers/oauth-tutorial
+```bash
+npm install next-auth
+```
+
+### Auth0
+https://auth0.com/
+
+
+### Zod (validation)
+https://www.npmjs.com/package/zod
+```bash
+npm i zod
+```

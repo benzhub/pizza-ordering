@@ -9,7 +9,7 @@ export const useProducts = () => {
   } = useQuery<Pizza[]>({
     queryKey: ["pizzas"],
     queryFn: () => axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/pizzas`)
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/products/`)
       .then((res) => res.data),
     staleTime: 60 * 1000, // 60s
     retry: 3,
