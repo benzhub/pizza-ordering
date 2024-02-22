@@ -1,15 +1,14 @@
 "use client";
-import React from "react";
-import Image from "next/image";
-import { Button, Flex, Heading } from "@radix-ui/themes";
+import { DeleteItem } from "@/app/cart/_components/DeleteItem";
+import { UpdateItemQuantity } from "@/app/cart/_components/UpdateItemQuantity";
 import {
   addItem,
   getCurrentQuantityById,
-} from "@/lib/features/carts/cartsSlice";
+} from "@/lib/features/cart/cartsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { Button, Flex, Heading, Text } from "@radix-ui/themes";
+import Image from "next/image";
 import { Pizza } from "./PizzaType";
-import { UpdateItemQuantity } from "@/app/cart/_components/UpdateItemQuantity";
-import { DeleteItem } from "@/app/cart/_components/DeleteItem";
 
 export const ProductItem = ({ pizza }: { pizza: Pizza }) => {
   const { id, title, description, thumb, price } = pizza;
@@ -42,11 +41,11 @@ export const ProductItem = ({ pizza }: { pizza: Pizza }) => {
         <Heading as="h4" size={{ initial: "3", lg: "5" }}>
           {title}
         </Heading>
-        <p className="text-sm capitalize italic text-stone-500 pt-1 pb-2">
+        <Text className="text-sm capitalize italic text-stone-500 pt-1 pb-2">
           {description}
-        </p>
+        </Text>
         <Flex justify="between" align="center">
-          <span className="inline-block font-bold text-lg">$ {price}</span>
+          <Text size="4" weight="bold">$ {price}</Text>
           {!isInCart && (
             <Button
               radius="full"

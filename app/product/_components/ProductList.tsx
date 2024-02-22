@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
+import { Pizza as PizzaProp } from "./PizzaType";
+import { ProductItem } from "./ProductItem";
 import ProductListSkeleton from "./ProductListSkeleton";
 import { useProducts } from "./useProducts";
-import { ProductItem } from "./ProductItem";
-import { Pizza as PizzaProp } from "./PizzaType";
 
 const ProductList = () => {
   const { pizzas, error, isLoading } = useProducts();

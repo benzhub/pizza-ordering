@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReucer";
-import { CartItem, CartState } from "./features/carts/cartsSlice";
+import { CartItem, CartState } from "./features/cart/cartsSlice";
+import { UserState } from "./features/user/usersSlice";
 
 export interface RootState {
+  user: UserState;
   carts: CartState;
 }
 
@@ -13,6 +15,7 @@ export const makeStore = () => {
       carts: {
         carts: JSON.parse(localStorage.getItem("carts") || "[]") as CartItem[],
       },
+      user: JSON.parse(localStorage.getItem("user") || "{}") as UserState,
     };
   }
 
@@ -27,6 +30,7 @@ export const makeStore = () => {
         "carts",
         JSON.stringify(store.getState().carts.carts)
       );
+      localStorage.setItem("user", JSON.stringify(store.getState().user));
     });
   }
 

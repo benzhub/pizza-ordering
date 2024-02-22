@@ -3,12 +3,12 @@ import {
   CartItem as CartItemType,
   clearCart,
   getCarts,
-} from "@/lib/features/carts/cartsSlice";
+} from "@/lib/features/cart/cartsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Button, Container, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { IoArrowBack } from "react-icons/io5";
+import CartEmpty from "./_components/CartEmpty";
 import { CartItem } from "./_components/CartItem";
 
 const CartPage = () => {
@@ -25,12 +25,8 @@ const CartPage = () => {
   }
   return (
     <Container>
-      <div className="p-2">
-        <Button>
-          <Link href="/product" className="flex items-center gap-2">
-            <IoArrowBack /> Back to Products List
-          </Link>
-        </Button>
+      {cartItems.length === 0 && <CartEmpty />}
+      <div className="p-4">
         <ul className="divide-y-[1px] divide-stone-200">
           {cartItems?.map((item: CartItemType) => (
             <CartItem key={item.productId} item={item} />
