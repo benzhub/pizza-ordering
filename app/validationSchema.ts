@@ -13,6 +13,7 @@ export const orderSchema = z.object({
   customerAddress: z.string(),
   cartItems: z.array(
     z.object({
+      unitPrice: z.number(),
       productId: z.number(),
       quantity: z.number().min(1),
     })

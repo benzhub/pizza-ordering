@@ -4,6 +4,7 @@ import {
   increaseItemQuantity,
 } from "@/lib/features/cart/cartsSlice";
 import { useAppDispatch } from "@/lib/hooks";
+import { formatIntl } from "@/utils/formatIntl";
 import { Button, Flex, Text } from "@radix-ui/themes";
 
 export const UpdateItemQuantity = ({productId, currentQuantity}: {productId: string; currentQuantity: number}) => {
@@ -19,7 +20,7 @@ export const UpdateItemQuantity = ({productId, currentQuantity}: {productId: str
       >
         -
       </Button>
-      <Text>{currentQuantity}</Text>
+      <Text>{formatIntl(currentQuantity)}</Text>
       <Button
         variant="soft"
         color="indigo"

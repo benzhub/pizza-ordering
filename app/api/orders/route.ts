@@ -6,7 +6,7 @@ import authOptions from "@/app/auth/authOptions";
 import { Status } from "@prisma/client";
 
 interface ModifiedSession extends Session {
-  user: Session['user'] & {
+  user: Session["user"] & {
     id: string;
   };
 }
@@ -22,7 +22,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(validation.error.format(), { status: 400 });
     }
 
-    const { cartItems, customerName, customerPhone, customerAddress } = validation.data;
+    const { cartItems, customerName, customerPhone, customerAddress } =
+      validation.data;
 
     const typedSession = session as ModifiedSession;
 
@@ -34,11 +35,12 @@ export async function POST(request: NextRequest) {
         customerAddress,
         status: Status.OPEN,
         assignedOrderItem: {
-          create: cartItems.map(({ productId, quantity }) => ({
+          create: cartItems.map(({ productId, unitPrice, quantity }) => ({
+            unitPrice,
             quantity,
             assignedToProduct: { connect: { id: productId } },
           })),
-        }
+        },
       },
       include: {
         assignedOrderItem: true,
@@ -52,6 +54,25 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to create order" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) return NextResponse.json({}, { status: 401 });
+
+    const typedSession = session as ModifiedSession;
+    const orders = await prisma.order.findMany({
+      where: { assignedToUserId: typedSession.user.id },
+      include: { assignedOrderItem: true }
+    });
+    return NextResponse.json(orders, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to fetch orders" },
       { status: 500 }
     );
   }

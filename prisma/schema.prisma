@@ -26,6 +26,7 @@ model Product {
 
 model OrderItem {
   id                  String   @id @default(cuid())
+  unitPrice           Int      @db.Int
   quantity            Int      @db.Int
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt

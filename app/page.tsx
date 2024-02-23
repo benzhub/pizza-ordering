@@ -32,7 +32,7 @@ export default function Home() {
         ) : (
           <>
             <Text align="center">
-              &#128400; Welcome! Please start by telling us your name:
+              &#128400; Welcome! Please Login to select your pizza.
             </Text>
             <Link href="/api/auth/signin"><Button size="4" radius="full">Login</Button></Link>
           </>

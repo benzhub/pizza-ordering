@@ -12,7 +12,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Button, Container, Heading, TextField } from "@radix-ui/themes";
 import { MouseEvent, useEffect, useState } from "react";
 import CartEmpty from "../cart/_components/CartEmpty";
-import { useCheckout } from "./useCheckout";
+import { useCheckout } from "./_components/useCheckout";
+import { formatIntl } from "@/utils/formatIntl";
 
 const Checkout = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +26,7 @@ const Checkout = () => {
   const isLoadingAddress = addressStatus === "loading";
   const totalPrice = useAppSelector(getTotalCartPrice);
   const cartItems = useAppSelector(getCarts).map((item) => {
-    return { productId: item.productId, quantity: item.quantity };
+    return { productId: item.productId, unitPrice: item.unitPrice, quantity: item.quantity };
   });
   const [formattedTotalPrice, setFormattedTotalPrice] = useState<string>("0");
   const [customerName, setCustomerName] = useState<string>("");
@@ -34,7 +35,7 @@ const Checkout = () => {
   const { isPending, checkout } = useCheckout();
 
   useEffect(() => {
-    setFormattedTotalPrice(new Intl.NumberFormat("en-US").format(totalPrice));
+    setFormattedTotalPrice(formatIntl(totalPrice));
     setCustomerAddress(address);
     setCustomerPhone(phone);
     setCustomerName(username);
