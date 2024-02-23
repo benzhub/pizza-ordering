@@ -1,5 +1,4 @@
-import { Order } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -25,13 +24,15 @@ const postOrder = async (data: CreatedOrderType) => {
 };
 
 export function useCheckout() {
+  const queryClient = useQueryClient();
   const {
     mutate: checkout,
     isPending,
     isSuccess,
   } = useMutation({
     mutationFn: (data: CreatedOrderType) => postOrder(data),
-    onSuccess: (order: Order) => {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
       toast.success("Your Order is created successfully!");
     },
     onError: () => {
