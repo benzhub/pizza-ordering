@@ -1,31 +1,55 @@
 "use client";
-import { getTotalCartPrice } from "@/lib/features/cart/cartsSlice";
+import { Spinner } from "@/app/components";
+import {
+  clearCart,
+  getCarts,
+  getTotalCartPrice,
+} from "@/lib/features/cart/cartsSlice";
+import {
+  fetchAddress
+} from "@/lib/features/user/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Button, Container, Heading, TextField } from "@radix-ui/themes";
 import { MouseEvent, useEffect, useState } from "react";
 import CartEmpty from "../cart/_components/CartEmpty";
-import { fetchAddress } from "@/lib/features/user/usersSlice";
+import { useCheckout } from "./_components/useCheckout";
+import { formatIntl } from "@/utils/formatIntl";
 
 const Checkout = () => {
   const dispatch = useAppDispatch();
   const {
     username,
     status: addressStatus,
-    position,
+    phone,
     address,
-    error: errorAddress,
   } = useAppSelector((store) => store.user);
   const isLoadingAddress = addressStatus === "loading";
   const totalPrice = useAppSelector(getTotalCartPrice);
+  const cartItems = useAppSelector(getCarts).map((item) => {
+    return { productId: item.productId, unitPrice: item.unitPrice, quantity: item.quantity };
+  });
   const [formattedTotalPrice, setFormattedTotalPrice] = useState<string>("0");
+  const [customerName, setCustomerName] = useState<string>("");
+  const [customerPhone, setCustomerPhone] = useState<string>("");
+  const [customerAddress, setCustomerAddress] = useState<string>("");
+  const { isPending, checkout } = useCheckout();
 
   useEffect(() => {
-    setFormattedTotalPrice(new Intl.NumberFormat("en-US").format(totalPrice));
-  }, [totalPrice]);
+    setFormattedTotalPrice(formatIntl(totalPrice));
+    setCustomerAddress(address);
+    setCustomerPhone(phone);
+    setCustomerName(username);
+  }, [totalPrice, address, phone, username]);
 
   function handleGetPosition(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     dispatch(fetchAddress());
+  }
+
+  async function handleCheckout(e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    checkout({ cartItems, customerName, customerPhone, customerAddress });
+    dispatch(clearCart());
   }
 
   return (
@@ -44,7 +68,8 @@ const Checkout = () => {
                   <TextField.Input
                     placeholder="Your First Name"
                     size="3"
-                    defaultValue={username}
+                    defaultValue={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
                     radius="full"
                   />
                 </TextField.Root>
@@ -56,6 +81,8 @@ const Checkout = () => {
                     radius="full"
                     size="3"
                     placeholder="Your Phone Number"
+                    defaultValue={customerPhone}
+                    onChange={(e) => setCustomerPhone(e.target.value)}
                   />
                 </TextField.Root>
               </div>
@@ -66,27 +93,36 @@ const Checkout = () => {
                     radius="full"
                     size="3"
                     placeholder="Your Address"
-                    defaultValue={address}
+                    defaultValue={customerAddress}
+                    onChange={(e) => {
+                      setCustomerAddress(e.target.value);
+                    }}
                   />
-                  {!position?.coords.latitude && !position?.coords.longitude && (
+                  {!address && (
                     <Button
                       disabled={isLoadingAddress}
                       onClick={handleGetPosition}
                       radius="full"
                     >
-                      {isLoadingAddress ? "Loading..." : "Get Position"}
                       {isLoadingAddress ? (
-                        <span className="relative flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
-                        </span>
-                      ) : null}
+                        <>
+                          <span>Loading...</span>
+                          <Spinner />
+                        </>
+                      ) : (
+                        <span>Get Position</span>
+                      )}
                     </Button>
                   )}
                 </TextField.Root>
               </div>
               <div className="mt-4">
-                <Button size="4" radius="full">
+                <Button
+                  size="4"
+                  radius="full"
+                  onClick={handleCheckout}
+                  disabled={isPending}
+                >
                   Order Now From ${formattedTotalPrice}
                 </Button>
               </div>

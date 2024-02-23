@@ -1,16 +1,23 @@
 "use client";
+import { updateName } from "@/lib/features/user/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { Avatar, Button, Container, DropdownMenu, Flex, Text } from "@radix-ui/themes";
+import {
+  Avatar,
+  Button,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaPizzaSlice } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useSession } from "next-auth/react";
-import { updateName } from "@/lib/features/user/usersSlice";
 
 const NavBar = () => {
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { status, data: session } = useSession();
   const user = useAppSelector((state) => state.user);
@@ -34,9 +41,9 @@ const NavBar = () => {
     }
   }, [status, session, user.username, dispatch]);
 
-  function handleLogout() {
+  function handleSignout() {
     localStorage.removeItem("user");
-    router.push("/api/auth/signout")
+    signOut({ callbackUrl: process.env.NEXTAUTH_URL });
   }
 
   return (
@@ -45,14 +52,19 @@ const NavBar = () => {
         <Flex justify="between">
           <Link href="/" className="flex items-center gap-4">
             <FaPizzaSlice size="32" />
-            {username && <><Text weight="bold">Hi, {username}</Text><Avatar
-              src={session?.user?.image!}
-              fallback="?"
-              size="2"
-              radius="full"
-              className="cursor-pointer"
-              referrerPolicy="no-referrer"
-            /></>}
+            {username && (
+              <>
+                <Text weight="bold">Hi, {username}</Text>
+                <Avatar
+                  src={session?.user?.image!}
+                  fallback="?"
+                  size="2"
+                  radius="full"
+                  className="cursor-pointer"
+                  referrerPolicy="no-referrer"
+                />
+              </>
+            )}
           </Link>
           <div className="flex justify-between items-center gap-4">
             <ul className="hidden lg:flex justify-center items-center gap-4 font-bold text-xl">
@@ -68,7 +80,7 @@ const NavBar = () => {
               ))}
               {isAuthenticated ? (
                 <li>
-                  <Button onClick={handleLogout} size="3">
+                  <Button onClick={handleSignout} size="3">
                     Logout
                   </Button>
                 </li>
@@ -96,17 +108,15 @@ const NavBar = () => {
                     </DropdownMenu.Item>
                   ))}
                   {isAuthenticated ? (
-                    // <DropdownMenu.Item className="my-2">
-                      <Link href="/api/auth/signout" >
-                        <Button onClick={handleLogout} size="3" radius="large">Logout</Button>
-                      </Link>
-                    // </DropdownMenu.Item>
+                    <Button onClick={handleSignout} size="3" radius="large">
+                      Logout
+                    </Button>
                   ) : (
-                    // <DropdownMenu.Item className="my-2">
-                      <Link href="/api/auth/signin">
-                        <Button size="3" radius="large">Login</Button>
-                      </Link>
-                    // </DropdownMenu.Item>
+                    <Link href="/api/auth/signin">
+                      <Button size="3" radius="large">
+                        Login
+                      </Button>
+                    </Link>
                   )}
                 </DropdownMenu.Content>
               </DropdownMenu.Root>

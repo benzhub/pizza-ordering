@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "../../../prisma/client";
+import authOptions from "@/app/auth/authOptions";
 import { productSchema } from "@/app/validationSchema";
 import { getServerSession } from "next-auth";
-import authOptions from "@/app/auth/authOptions";
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "../../../prisma/client";
 
 export async function GET(request: NextRequest) {
   const products = await prisma.product.findMany({});

@@ -1,7 +1,7 @@
-import Auth0Provider from "next-auth/providers/auth0";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "../../prisma/client";
 import { NextAuthOptions } from "next-auth";
+import Auth0Provider from "next-auth/providers/auth0";
+import prisma from "../../prisma/client";
 
 const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -16,16 +16,16 @@ const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  // callbacks: {
-  //   jwt: async ({ token, user }) => {
-  //     return { ...token, ...user };
-  //   },
-  //   session: async ({ session, token }) => {
-  //     session.user = token;
-  //     return session;
-  //   },
-  // },
-  // secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      return { ...token, ...user };
+    },
+    session: async ({ session, token }) => {
+      session.user = token;
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default authOptions;

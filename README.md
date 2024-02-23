@@ -60,9 +60,15 @@ https://www.npmjs.com/package/@auth0/nextjs-auth0
 npm i @auth0/nextjs-auth0
 ```
 
-
 ### Zod (validation)
 https://www.npmjs.com/package/zod
 ```bash
 npm i zod
+```
+
+
+### React Hot Toast
+https://react-hot-toast.com/
+```bash
+npm install react-hot-toast
 ```
