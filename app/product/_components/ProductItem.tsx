@@ -27,24 +27,22 @@ export const ProductItem = ({ pizza }: { pizza: Pizza }) => {
     dispatch(addItem(newItem));
   }
   return (
-    <li className="grid grid-cols-[auto_1fr] items-center">
-      <div className="lg:py-4">
-        <Image
-          className="rounded-md w-[100px] lg:w-[200px] h-auto"
+    <li className="grid grid-cols-[auto_1fr] items-center py-4">
+      <Image
+          className="rounded-md w-[120px] lg:w-[180px] h-auto"
           src={thumb}
           alt={title}
-          width={100}
+          width={120}
           height={100}
         />
-      </div>
-      <div className="p-2">
+      <div className="p-4">
         <Heading as="h4" size={{ initial: "3", lg: "5" }}>
           {title}
         </Heading>
         <Text className="text-sm capitalize italic text-stone-500 pt-1 pb-2">
           {description}
         </Text>
-        <Flex justify="between" align="center">
+        <Flex justify="between" align="center" className="mt-4">
           <Text size="4" weight="bold">$ {price}</Text>
           {!isInCart && (
             <Button

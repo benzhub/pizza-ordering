@@ -10,7 +10,7 @@ const ProductList = () => {
   if (isLoading) return <ProductListSkeleton />;
   if (error) return null;
   return (
-    <ul className="divide-y-[1px] divide-stone-200/50 p-2">
+    <ul className="divide-y-[1px] divide-stone-200/50">
       {pizzas?.map((pizza: PizzaProp) => (
         <ProductItem key={pizza.id} pizza={pizza} />
       ))}
