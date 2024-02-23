@@ -1,6 +1,6 @@
 "use client"
 import { formatDateString } from "@/utils/formatDateString";
-import { type Order, type OrderItem as OrderItemProps } from "@prisma/client";
+import { Status, type Order, type OrderItem as OrderItemProps } from "@prisma/client";
 import { Table } from "@radix-ui/themes";
 import { useOrders } from "./useOrders";
 import { type OrderProps } from "./useOrders";
@@ -23,7 +23,7 @@ const OrderItem = () => {
 
       {/* Desktop */}
       <Table.Root variant="surface" className="hidden lg:block">
-        <Table.Header>
+        <Table.Header className="text-lg">
           <Table.Row>
             {columns.map((column) => (
               <Table.ColumnHeaderCell key={column.value}>
@@ -54,14 +54,14 @@ const Mobile = ({ order }: { order: OrderProps }) => {
     >
       <ul className="grid grid-cols-1 gap-2">
         <li className="border-b-2 border-white py-2 text-xl">ID: {order.id}</li>
-        <li>Customer: {order.customerName}</li>
+        <li>Customer: <span className="text-xl italic">{order.customerName}</span></li>
         <li>Phone: {order.customerPhone}</li>
         <li className="italic text-stone-500 text-ellipsis overflow-hidden whitespace-nowrap">
           Address: {order.customerAddress}
         </li>
         <li>Created: {formatDateString(order.createdAt)}</li>
         <div className="flex justify-between items-center border-t-2 border-white py-2">
-          <li>Status: {order.status}</li>
+          <li className={statuses[order.status].className}>{statuses[order.status].label}</li>
           <li>
             Price: <span className="text-red-500">${totalPrice}</span>
           </li>
@@ -77,14 +77,14 @@ const Desktop = ({ order }: { order: OrderProps }) => {
     0
   );
   return (
-    <Table.Row key={order.id}>
+    <Table.Row key={order.id} align="center" className="text-lg">
       <Table.Cell>{order.id}</Table.Cell>
       <Table.Cell className="text-red-500">$ {totalPrice}</Table.Cell>
       <Table.Cell>{order.customerName}</Table.Cell>
       <Table.Cell>{order.customerPhone}</Table.Cell>
       <Table.Cell>{order.customerAddress}</Table.Cell>
       <Table.Cell>{formatDateString(order.createdAt)}</Table.Cell>
-      <Table.Cell>{order.status}</Table.Cell>
+      <Table.Cell className={statuses[order.status].className}>{statuses[order.status].label}</Table.Cell>
     </Table.Row>
   );
 };
@@ -102,6 +102,15 @@ const columns: { label: string; value: keyof OrderColumn }[] = [
   { label: "Created", value: "createdAt" },
   { label: "Status", value: "status" },
 ];
+
+const statuses: { [key in Status]: { label: string; className: string } } = {
+  OPEN: {label: "Open", className: "text-blue-500"},
+  PENDING: {label: "Pending", className: "text-emerald-500"},
+  CLOSE: {label: "Close", className: "text-orange-500"},
+  CANCEL: {label: "Cancel", className: "text-rose-500"}
+}
+
+
 export const columnNames = columns.map((column) => column.value);
 
 export const dynamic = "force-dynamic";
