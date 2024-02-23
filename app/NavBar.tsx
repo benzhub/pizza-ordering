@@ -42,7 +42,7 @@ const NavBar = () => {
 
   function handleSignout() {
     localStorage.removeItem("user");
-    signOut({ callbackUrl: process.env.NEXTAUTH_URL });
+    signOut({ callbackUrl: '/' });
   }
 
   return (
