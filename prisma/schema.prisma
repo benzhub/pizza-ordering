@@ -38,6 +38,7 @@ model OrderItem {
   assignedToProduct   Product  @relation(fields: [assignedToProductId], references: [id])
 
   @@index([assignedToOrderId, assignedToProductId])
+  @@index([assignedToProductId])
 }
 
 enum Status {
