@@ -2,6 +2,7 @@ import { ScrollArea, Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import Footer from "./Footer";
 import NavBar from "./NavBar";
 import QueryClientProvider from "./QueryClientProvider";
@@ -45,6 +46,7 @@ export default function RootLayout({
             </StoreProvider>
           </AuthProvider>
         </QueryClientProvider>
+        <Toaster/>
       </body>
     </html>
   );

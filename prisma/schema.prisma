@@ -37,13 +37,24 @@ model OrderItem {
   @@index([assignedToOrderId, assignedToProductId])
 }
 
+enum Status {
+  OPEN
+  PENDING
+  CLOSE
+  CANCEL
+}
+
 model Order {
   id                String      @id @default(cuid())
+  customerName      String      @db.VarChar(255)
+  customerPhone     String      @db.VarChar(255)
+  customerAddress   String      @db.VarChar(255)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
   assignedToUserId  String      @db.VarChar(255)
   assignedToUser    User        @relation(fields: [assignedToUserId], references: [id])
   assignedOrderItem OrderItem[]
+  status            Status // Define the status enum field
 
   @@index([assignedToUserId])
 }

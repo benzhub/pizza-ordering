@@ -1,13 +1,13 @@
 "use client";
+import { updateName } from "@/lib/features/user/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Avatar, Button, Container, DropdownMenu, Flex, Text } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaPizzaSlice } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useSession } from "next-auth/react";
-import { updateName } from "@/lib/features/user/usersSlice";
 
 const NavBar = () => {
   const router = useRouter()

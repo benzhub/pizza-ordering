@@ -76,6 +76,7 @@ export interface UserState {
   status: "idle" | "loading" | "error";
   position: GeolocationPosition;
   address: string;
+  phone: string;
   error: string;
 }
 
@@ -88,6 +89,7 @@ const initialState: UserState = {
       longitude: 0
     }
   },
+  phone: "",
   address: "",
   error: "",
 };
@@ -98,6 +100,12 @@ const userSlice = createSlice({
   reducers: {
     updateName(state, action: PayloadAction<string>) {
       state.username = action.payload;
+    },
+    updatePhone(state, action: PayloadAction<string>) {
+      state.phone = action.payload;
+    },
+    updateAddress(state, action: PayloadAction<string>) {
+      state.address = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -116,7 +124,7 @@ const userSlice = createSlice({
       }),
 });
 
-export const { updateName } = userSlice.actions;
+export const { updateName, updatePhone, updateAddress } = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 export default userReducer;

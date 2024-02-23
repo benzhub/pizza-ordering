@@ -27,9 +27,12 @@ CREATE TABLE `OrderItem` (
 -- CreateTable
 CREATE TABLE `Order` (
     `id` VARCHAR(191) NOT NULL,
+    `customerPhone` VARCHAR(255) NOT NULL,
+    `address` VARCHAR(255) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `assignedToUserId` VARCHAR(255) NOT NULL,
+    `status` ENUM('OPEN', 'PENDING', 'CLOSE', 'CANCEL') NOT NULL,
 
     INDEX `Order_assignedToUserId_idx`(`assignedToUserId`),
     PRIMARY KEY (`id`)
