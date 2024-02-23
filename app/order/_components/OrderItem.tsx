@@ -4,6 +4,7 @@ import { Status, type Order, type OrderItem as OrderItemProps } from "@prisma/cl
 import { Table } from "@radix-ui/themes";
 import { useOrders } from "./useOrders";
 import { type OrderProps } from "./useOrders";
+import { formatIntl } from "@/utils/formatIntl";
 
 const OrderItem = () => {
   const { orders, error, isLoading } = useOrders();
@@ -63,7 +64,7 @@ const Mobile = ({ order }: { order: OrderProps }) => {
         <div className="flex justify-between items-center border-t-2 border-white py-2">
           <li className={statuses[order.status].className}>{statuses[order.status].label}</li>
           <li>
-            Price: <span className="text-red-500">${totalPrice}</span>
+            Price: <span className="text-red-500">${formatIntl(totalPrice)}</span>
           </li>
         </div>
       </ul>
@@ -79,7 +80,7 @@ const Desktop = ({ order }: { order: OrderProps }) => {
   return (
     <Table.Row key={order.id} align="center" className="text-lg">
       <Table.Cell>{order.id}</Table.Cell>
-      <Table.Cell className="text-red-500">$ {totalPrice}</Table.Cell>
+      <Table.Cell className="text-red-500">$ {formatIntl(totalPrice)}</Table.Cell>
       <Table.Cell>{order.customerName}</Table.Cell>
       <Table.Cell>{order.customerPhone}</Table.Cell>
       <Table.Cell>{order.customerAddress}</Table.Cell>
