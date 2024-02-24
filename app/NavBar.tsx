@@ -1,6 +1,7 @@
 "use client";
+import { Skeleton } from "@/app/components";
 import { updateName } from "@/lib/features/user/usersSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import {
   Avatar,
   Button,
@@ -12,10 +13,9 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaPizzaSlice } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { Skeleton } from "@/app/components";
 import { SkeletonTheme } from "react-loading-skeleton";
 
 const links = [
@@ -177,8 +177,8 @@ const NavSkeleton = () => {
                 <Skeleton height="2rem" width="5rem" />
                 <Skeleton height="2rem" width="5rem" />
               </Flex>
+              <Skeleton width="2.5rem" height="2rem" />
             </div>
-            <Skeleton width="2.5rem" height="2rem" />
           </SkeletonTheme>
         </Flex>
       </Container>
