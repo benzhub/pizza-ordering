@@ -22,6 +22,7 @@ export const makeStore = () => {
   const store = configureStore({
     reducer: rootReducer,
     preloadedState,
+    devTools: true,
   });
 
   if (typeof window !== "undefined") {

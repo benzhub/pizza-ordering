@@ -126,5 +126,4 @@ const userSlice = createSlice({
 
 export const { updateName, updatePhone, updateAddress } = userSlice.actions;
 
-const userReducer = userSlice.reducer;
-export default userReducer;
+export const userReducer = userSlice.reducer;
