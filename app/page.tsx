@@ -1,21 +1,12 @@
 "use client";
 import { Skeleton } from "@/app/components";
-import { Button, Container, Flex, Heading, Text } from "@radix-ui/themes";
+import { Box, Button, Container, Flex, Heading, Text } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 export default function Home() {
-  const [username, setUsername] = useState("");
   const { status, data: session } = useSession();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    if (status === "authenticated" && session?.user?.name) {
-      setIsAuthenticated(true);
-      setUsername(session.user.name);
-    }
-  }, [session?.user?.name, status]);
 
   if (status === "loading") return <HomePageSkeleton />;
 
@@ -28,14 +19,16 @@ export default function Home() {
         <Heading as="h3" align="center" size={{ initial: "4" }}>
           Straight out of the oven, straight to you.
         </Heading>
-        <div className="my-5">
-          {isAuthenticated && (
+        <Box className="my-5">
+          {status === "authenticated" && (
             <Button radius="full" size="4">
-              <Link href="/product">Continue Ordering, {username}</Link>
+              <Link href="/product">
+                Continue Ordering, {session?.user?.name}
+              </Link>
             </Button>
           )}
-          {!isAuthenticated && (
-            <>
+          {status === "unauthenticated" && (
+            <Flex direction="column" align="center" gap="4">
               <Text align="center">
                 &#128400; Welcome! Please Login to select your pizza.
               </Text>
@@ -44,9 +37,9 @@ export default function Home() {
                   Login
                 </Button>
               </Link>
-            </>
+            </Flex>
           )}
-        </div>
+        </Box>
       </Flex>
     </Container>
   );
@@ -55,16 +48,18 @@ export default function Home() {
 const HomePageSkeleton = () => {
   return (
     <Container>
-      <Flex direction="column" gap="2" align="center" className="my-3">
-        <Skeleton height="3rem" width="12rem" />
-        <Skeleton height="1.5rem" width="20rem" />
-        <Skeleton
-          height="3.5rem"
-          width="16rem"
-          style={{ borderRadius: "50px" }}
-          className="my-4"
-        />
-      </Flex>
+      <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+        <Flex direction="column" gap="2" align="center" className="my-3">
+          <Skeleton height="3rem" width="12rem" />
+          <Skeleton height="1.5rem" width="20rem" />
+          <Skeleton
+            height="3.5rem"
+            width="16rem"
+            style={{ borderRadius: "50px" }}
+            className="my-4"
+          />
+        </Flex>
+      </SkeletonTheme>
     </Container>
   );
 };

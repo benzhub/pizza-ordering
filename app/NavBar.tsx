@@ -15,6 +15,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaPizzaSlice } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { Skeleton } from "@/app/components";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 const links = [
   { label: "Home", href: "/" },
@@ -27,43 +29,27 @@ const links = [
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const { status, data: session } = useSession();
-  const user = useAppSelector((state) => state.user);
-  const [username, setUsername] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (status !== "authenticated") setUsername(user.username);
     if (status === "authenticated" && session?.user?.name) {
-      setUsername(session.user.name);
-      dispatch(updateName(session.user.name));
-      setIsAuthenticated(true);
+      dispatch(updateName(session?.user?.name));
     }
-  }, [status, session, user.username, dispatch]);
+  }, [status, session?.user?.name, dispatch]);
 
-  function handleSignout() {
-    localStorage.removeItem("user");
-    signOut({ callbackUrl: '/' });
-  }
-
+  if (status === "loading") return <NavSkeleton />;
   return (
     <nav className="bg-[var(--tomato-a10)] p-4">
       <Container>
         <Flex justify="between">
           <Link href="/" className="flex items-center gap-4">
             <FaPizzaSlice size="32" />
-            {username && <Text weight="bold">Hi, {username}</Text>}
+            {status === "authenticated" && (
+              <Text weight="bold">Hi, {session?.user?.name}</Text>
+            )}
           </Link>
           <div className="flex justify-between items-center gap-4">
-            <Desktop
-              image={session?.user?.image!}
-              isAuthenticated={isAuthenticated}
-              handleSignout={handleSignout}
-            />
-            <Mobile
-              image={session?.user?.image!}
-              isAuthenticated={isAuthenticated}
-              handleSignout={handleSignout}
-            />
+            <Desktop />
+            <Mobile />
           </div>
         </Flex>
       </Container>
@@ -71,15 +57,13 @@ const NavBar = () => {
   );
 };
 
-const Mobile = ({
-  isAuthenticated,
-  handleSignout,
-  image,
-}: {
-  isAuthenticated: boolean;
-  handleSignout: () => void;
-  image: string;
-}) => {
+function handleSignout() {
+  localStorage.removeItem("user");
+  signOut({ callbackUrl: "/" });
+}
+
+const Mobile = () => {
+  const { status, data: session } = useSession();
   return (
     <div className="lg:hidden">
       <DropdownMenu.Root>
@@ -89,10 +73,10 @@ const Mobile = ({
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          {isAuthenticated && (
+          {status === "authenticated" && (
             <DropdownMenu.Item className="m-auto my-4">
               <Avatar
-                src={image}
+                src={session?.user?.image || ""}
                 fallback="?"
                 size="3"
                 radius="full"
@@ -108,7 +92,7 @@ const Mobile = ({
               </Link>
             </DropdownMenu.Item>
           ))}
-          {isAuthenticated ? (
+          {status === "authenticated" ? (
             <DropdownMenu.Item className="my-4">
               <Button onClick={handleSignout} size="3" radius="large">
                 Logout
@@ -129,15 +113,8 @@ const Mobile = ({
   );
 };
 
-const Desktop = ({
-  isAuthenticated,
-  handleSignout,
-  image,
-}: {
-  isAuthenticated: boolean;
-  handleSignout: () => void;
-  image: string;
-}) => {
+const Desktop = () => {
+  const { status, data: session } = useSession();
   const currentPath = usePathname();
   return (
     <ul className="hidden lg:flex justify-center items-center gap-4 font-bold text-xl">
@@ -149,19 +126,19 @@ const Desktop = ({
           <Link href={link.href}>{link.label}</Link>
         </li>
       ))}
-      {!isAuthenticated && (
+      {status === "unauthenticated" && (
         <li>
           <Link href="/api/auth/signin">
             <Button size="3">Login</Button>
           </Link>
         </li>
       )}
-      {isAuthenticated && (
+      {status === "authenticated" && (
         <li>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <Avatar
-                src={image}
+                src={session?.user?.image || ""}
                 fallback="?"
                 size="2"
                 radius="full"
@@ -178,6 +155,34 @@ const Desktop = ({
         </li>
       )}
     </ul>
+  );
+};
+
+const NavSkeleton = () => {
+  return (
+    <nav className="bg-[var(--tomato-a10)] p-4">
+      <Container>
+        <Flex justify="between">
+          <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+            <Flex align="center" gap="4">
+              <FaPizzaSlice size="32" />
+              <Skeleton height="1.4rem" width="7rem" />
+            </Flex>
+            <div className="hidden lg:flex justify-between items-center gap-4">
+              <Flex gap="4">
+                <Skeleton height="2rem" width="5rem" />
+                <Skeleton height="2rem" width="5rem" />
+                <Skeleton height="2rem" width="5rem" />
+                <Skeleton height="2rem" width="5rem" />
+                <Skeleton height="2rem" width="5rem" />
+                <Skeleton height="2rem" width="5rem" />
+              </Flex>
+            </div>
+            <Skeleton width="2.5rem" height="2rem" />
+          </SkeletonTheme>
+        </Flex>
+      </Container>
+    </nav>
   );
 };
 
