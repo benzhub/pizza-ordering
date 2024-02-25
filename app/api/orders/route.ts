@@ -67,7 +67,10 @@ export async function GET(request: NextRequest) {
     const typedSession = session as ModifiedSession;
     const orders = await prisma.order.findMany({
       where: { assignedToUserId: typedSession.user.id },
-      include: { assignedOrderItem: true }
+      include: { assignedOrderItem: true },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return NextResponse.json(orders, { status: 200 });
   } catch (error) {
