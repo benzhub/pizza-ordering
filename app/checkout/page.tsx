@@ -1,19 +1,18 @@
 "use client";
-import { Spinner } from "@/app/components";
+import { Spinner, Skeleton } from "@/app/components";
 import {
   clearCart,
   getCarts,
   getTotalCartPrice,
 } from "@/lib/features/cart/cartsSlice";
-import {
-  fetchAddress
-} from "@/lib/features/user/usersSlice";
+import { fetchAddress } from "@/lib/features/user/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { Button, Container, Heading, TextField } from "@radix-ui/themes";
+import { Box, Button, Container, Heading, TextField } from "@radix-ui/themes";
 import { MouseEvent, useEffect, useState } from "react";
 import CartEmpty from "../cart/_components/CartEmpty";
 import { useCheckout } from "./_components/useCheckout";
 import { formatIntl } from "@/utils/formatIntl";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 const Checkout = () => {
   const dispatch = useAppDispatch();
@@ -25,20 +24,24 @@ const Checkout = () => {
   } = useAppSelector((store) => store.user);
   const isLoadingAddress = addressStatus === "loading";
   const totalPrice = useAppSelector(getTotalCartPrice);
-  const cartItems = useAppSelector(getCarts).map((item) => {
-    return { productId: item.productId, unitPrice: item.unitPrice, quantity: item.quantity };
-  });
+  const cartItems = useAppSelector(getCarts).map((item) => ({
+    productId: item.productId,
+    unitPrice: item.unitPrice,
+    quantity: item.quantity,
+  }));
   const [formattedTotalPrice, setFormattedTotalPrice] = useState<string>("0");
   const [customerName, setCustomerName] = useState<string>("");
   const [customerPhone, setCustomerPhone] = useState<string>("");
   const [customerAddress, setCustomerAddress] = useState<string>("");
-  const { isPending, checkout } = useCheckout();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { isCheckingout, checkout, isCheckoutSuccess } = useCheckout();
 
   useEffect(() => {
     setFormattedTotalPrice(formatIntl(totalPrice));
     setCustomerAddress(address);
     setCustomerPhone(phone);
     setCustomerName(username);
+    setIsLoading(false);
   }, [totalPrice, address, phone, username]);
 
   function handleGetPosition(e: MouseEvent<HTMLButtonElement>) {
@@ -49,7 +52,11 @@ const Checkout = () => {
   async function handleCheckout(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     checkout({ cartItems, customerName, customerPhone, customerAddress });
-    dispatch(clearCart());
+    if (isCheckoutSuccess) dispatch(clearCart());
+  }
+
+  if (isLoading) {
+    return <CheckoutSkeleton />;
   }
 
   return (
@@ -71,6 +78,7 @@ const Checkout = () => {
                     defaultValue={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     radius="full"
+                    disabled={isCheckingout}
                   />
                 </TextField.Root>
               </div>
@@ -83,6 +91,7 @@ const Checkout = () => {
                     placeholder="Your Phone Number"
                     defaultValue={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
+                    disabled={isCheckingout}
                   />
                 </TextField.Root>
               </div>
@@ -97,6 +106,7 @@ const Checkout = () => {
                     onChange={(e) => {
                       setCustomerAddress(e.target.value);
                     }}
+                    disabled={isCheckingout}
                   />
                   {!address && (
                     <Button
@@ -121,7 +131,7 @@ const Checkout = () => {
                   size="4"
                   radius="full"
                   onClick={handleCheckout}
-                  disabled={isPending}
+                  disabled={isCheckingout}
                 >
                   Order Now From ${formattedTotalPrice}
                 </Button>
@@ -130,6 +140,47 @@ const Checkout = () => {
           </>
         )}
       </div>
+    </Container>
+  );
+};
+
+const CheckoutSkeleton = () => {
+  return (
+    <Container>
+      <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+        <Box className="p-4 lg:w-[60%] m-auto">
+          <Skeleton height="2.5rem" width="18rem" />
+          <Box className="flex flex-col gap-4 mt-4">
+            <Box className="flex flex-col lg:flex-row gap-2 lg:gap-6">
+              <Box className="w-[40%]">
+                <Skeleton height="2.5rem" />
+              </Box>
+              <Box className="w-full">
+                <Skeleton height="3rem" style={{ borderRadius: "50px" }} />
+              </Box>
+            </Box>
+            <Box className="flex flex-col lg:flex-row gap-2 lg:gap-6">
+              <Box className="w-[40%]">
+                <Skeleton height="2.5rem" />
+              </Box>
+              <Box className="w-full">
+                <Skeleton height="3rem" style={{ borderRadius: "50px" }} />
+              </Box>
+            </Box>
+            <Box className="flex flex-col lg:flex-row gap-2 lg:gap-6">
+              <Box className="w-[40%]">
+                <Skeleton height="2.5rem" />
+              </Box>
+              <Box className="w-full">
+                <Skeleton height="3rem" style={{ borderRadius: "50px" }} />
+              </Box>
+            </Box>
+            <Box className="w-[250px] mt-4">
+              <Skeleton height="4rem" style={{ borderRadius: "50px" }} />
+            </Box>
+          </Box>
+        </Box>
+      </SkeletonTheme>
     </Container>
   );
 };

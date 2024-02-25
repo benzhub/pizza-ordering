@@ -27,8 +27,8 @@ export function useCheckout() {
   const queryClient = useQueryClient();
   const {
     mutate: checkout,
-    isPending,
-    isSuccess,
+    isPending: isCheckingout,
+    isSuccess: isCheckoutSuccess,
   } = useMutation({
     mutationFn: (data: CreatedOrderType) => postOrder(data),
     onSuccess: () => {
@@ -40,5 +40,5 @@ export function useCheckout() {
     },
   });
 
-  return { isPending, checkout, isSuccess };
+  return { isCheckingout, checkout, isCheckoutSuccess };
 }
