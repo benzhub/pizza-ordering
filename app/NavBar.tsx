@@ -1,9 +1,14 @@
 "use client";
 import { Skeleton } from "@/app/components";
-import { updateAddress, updateName, updatePhone } from "@/lib/features/user/usersSlice";
+import {
+  updateAddress,
+  updateName,
+  updatePhone,
+} from "@/lib/features/user/usersSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import {
   Avatar,
+  Box,
   Button,
   Container,
   DropdownMenu,
@@ -184,17 +189,17 @@ const NavSkeleton = () => {
               <FaPizzaSlice size="32" />
               <Skeleton height="1.4rem" width="7rem" />
             </Flex>
-            <div className="hidden lg:flex justify-between items-center gap-4">
-              <Flex gap="4">
-                <Skeleton height="2rem" width="5rem" />
-                <Skeleton height="2rem" width="5rem" />
-                <Skeleton height="2rem" width="5rem" />
-                <Skeleton height="2rem" width="5rem" />
-                <Skeleton height="2rem" width="5rem" />
-                <Skeleton height="2rem" width="5rem" />
-              </Flex>
+            <Box className="lg:hidden">
+              <Skeleton height="2rem" width="2.5rem" />
+            </Box>
+            <ul className="hidden lg:flex justify-center items-center gap-4 font-bold text-xl">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href}>{link.label}</Link>
+                </li>
+              ))}
               <Skeleton width="2.5rem" height="2rem" />
-            </div>
+            </ul>
           </SkeletonTheme>
         </Flex>
       </Container>
