@@ -1,6 +1,6 @@
 "use client";
 import { Skeleton } from "@/app/components";
-import { updateName } from "@/lib/features/user/usersSlice";
+import { updateAddress, updateName, updatePhone } from "@/lib/features/user/usersSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import {
   Avatar,
@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { FaPizzaSlice } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { Session } from "next-auth";
 
 const links = [
   { label: "Home", href: "/" },
@@ -26,15 +27,28 @@ const links = [
   { label: "Orders", href: "/order" },
 ];
 
+interface ModifiedSession extends Session {
+  user: Session["user"] & {
+    name: string;
+    phone: string;
+    address: string;
+    image: string;
+  };
+}
+
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const { status, data: session } = useSession();
+  const typedSession = session as ModifiedSession;
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.name) {
-      dispatch(updateName(session?.user?.name));
+    if (status === "authenticated" && typedSession?.user) {
+      const { name, phone, address } = typedSession.user;
+      if (name) dispatch(updateName(name));
+      if (phone) dispatch(updatePhone(phone));
+      if (address) dispatch(updateAddress(address));
     }
-  }, [status, session?.user?.name, dispatch]);
+  }, [status, typedSession?.user, dispatch]);
 
   if (status === "loading") return <NavSkeleton />;
   return (
@@ -44,7 +58,7 @@ const NavBar = () => {
           <Link href="/" className="flex items-center gap-4">
             <FaPizzaSlice size="32" />
             {status === "authenticated" && (
-              <Text weight="bold">Hi, {session?.user?.name}</Text>
+              <Text weight="bold">Hi, {typedSession?.user?.name}</Text>
             )}
           </Link>
           <div className="flex justify-between items-center gap-4">
@@ -64,6 +78,7 @@ function handleSignout() {
 
 const Mobile = () => {
   const { status, data: session } = useSession();
+  const typedSession = session as ModifiedSession;
   return (
     <div className="lg:hidden">
       <DropdownMenu.Root>
@@ -76,7 +91,7 @@ const Mobile = () => {
           {status === "authenticated" && (
             <DropdownMenu.Item className="m-auto my-4">
               <Avatar
-                src={session?.user?.image || ""}
+                src={typedSession?.user?.image || ""}
                 fallback="?"
                 size="3"
                 radius="full"
@@ -115,6 +130,7 @@ const Mobile = () => {
 
 const Desktop = () => {
   const { status, data: session } = useSession();
+  const typedSession = session as ModifiedSession;
   const currentPath = usePathname();
   return (
     <ul className="hidden lg:flex justify-center items-center gap-4 font-bold text-xl">
@@ -138,7 +154,7 @@ const Desktop = () => {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <Avatar
-                src={session?.user?.image || ""}
+                src={typedSession?.user?.image || ""}
                 fallback="?"
                 size="2"
                 radius="full"

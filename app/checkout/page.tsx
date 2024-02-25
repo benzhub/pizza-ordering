@@ -50,8 +50,6 @@ const Checkout = () => {
     resolver: zodResolver(orderSchemaWithoutCartItems)
   });
 
-  console.log(errors)
-
   useEffect(() => {
     setFormattedTotalPrice(formatIntl(totalPrice));
     setIsLoading(false);
@@ -70,7 +68,6 @@ const Checkout = () => {
   }
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
     checkout({...data, cartItems})
   });
 
