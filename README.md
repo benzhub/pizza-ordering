@@ -66,9 +66,17 @@ https://www.npmjs.com/package/zod
 npm i zod
 ```
 
-
 ### React Hot Toast
 https://react-hot-toast.com/
 ```bash
 npm install react-hot-toast
+```
+
+### React Hook Form
+https://react-hook-form.com/get-started
+https://www.npmjs.com/package/@hookform/resolvers
+
+```bash
+npm i react-hook-form
+npm i @hookform/resolvers
 ```

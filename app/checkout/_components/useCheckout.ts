@@ -1,18 +1,7 @@
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
-
-interface CartItem {
-  productId: string;
-  quantity: number;
-}
-
-interface CreatedOrderType {
-  cartItems: CartItem[];
-  customerName: string;
-  customerPhone: string;
-  customerAddress: string;
-}
+import { CreatedOrderType } from "../page";
 
 const postOrder = async (data: CreatedOrderType) => {
   try {

@@ -1,5 +1,5 @@
 "use client";
-import { Spinner, Skeleton } from "@/app/components";
+import { Skeleton, Spinner } from "@/app/components";
 import {
   clearCart,
   getCarts,
@@ -7,12 +7,22 @@ import {
 } from "@/lib/features/cart/cartsSlice";
 import { fetchAddress } from "@/lib/features/user/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { formatIntl } from "@/utils/formatIntl";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Heading, TextField } from "@radix-ui/themes";
 import { MouseEvent, useEffect, useState } from "react";
-import CartEmpty from "../cart/_components/CartEmpty";
-import { useCheckout } from "./_components/useCheckout";
-import { formatIntl } from "@/utils/formatIntl";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { z } from "zod";
+import CartEmpty from "../cart/_components/CartEmpty";
+import { orderSchema, phoneNumberRegex } from "../validationSchema";
+import { useCheckout } from "./_components/useCheckout";
+export type CreatedOrderType = z.infer<typeof orderSchema>;
+
+export type CreatedOrderTypeWithoutCartItems = Omit<CreatedOrderType, 'cartItems'>;
+
+const orderSchemaWithoutCartItems = orderSchema.omit({ cartItems: true });
 
 const Checkout = () => {
   const dispatch = useAppDispatch();
@@ -25,35 +35,44 @@ const Checkout = () => {
   const isLoadingAddress = addressStatus === "loading";
   const totalPrice = useAppSelector(getTotalCartPrice);
   const cartItems = useAppSelector(getCarts).map((item) => ({
-    productId: item.productId,
+    productId: Number(item.productId),
     unitPrice: item.unitPrice,
     quantity: item.quantity,
   }));
   const [formattedTotalPrice, setFormattedTotalPrice] = useState<string>("0");
-  const [customerName, setCustomerName] = useState<string>("");
-  const [customerPhone, setCustomerPhone] = useState<string>("");
-  const [customerAddress, setCustomerAddress] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { isCheckingout, checkout, isCheckoutSuccess } = useCheckout();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreatedOrderTypeWithoutCartItems>({
+    resolver: zodResolver(orderSchemaWithoutCartItems)
+  });
+
+  console.log(errors)
 
   useEffect(() => {
     setFormattedTotalPrice(formatIntl(totalPrice));
-    setCustomerAddress(address);
-    setCustomerPhone(phone);
-    setCustomerName(username);
     setIsLoading(false);
-  }, [totalPrice, address, phone, username]);
+  }, [totalPrice]);
+
+  useEffect(() => {
+    if(errors?.customerName?.message) toast.error(`Fist Name: ${errors?.customerName?.message}`)
+    if(errors?.customerPhone?.message) toast.error(`Phone Number: ${errors?.customerPhone?.message}. Example: 0900123456`)
+    if(errors?.customerAddress?.message) toast.error(`Address: ${errors?.customerAddress?.message}`)
+    if (isCheckoutSuccess) dispatch(clearCart());
+  }, [errors, isCheckoutSuccess, dispatch]);
 
   function handleGetPosition(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     dispatch(fetchAddress());
   }
 
-  async function handleCheckout(e: MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    checkout({ cartItems, customerName, customerPhone, customerAddress });
-    if (isCheckoutSuccess) dispatch(clearCart());
-  }
+  const onSubmit = handleSubmit((data) => {
+    console.log(data)
+    checkout({...data, cartItems})
+  });
 
   if (isLoading) {
     return <CheckoutSkeleton />;
@@ -68,15 +87,18 @@ const Checkout = () => {
             <Heading as="h3" className="py-4" align="left">
               Ready to order? Let&apos;s go
             </Heading>
-            <form className="text-xl font-bold flex flex-col gap-2 lg:gap-4">
+            <form
+              className="text-xl font-bold flex flex-col gap-4"
+              onSubmit={onSubmit}
+            >
               <div className="grid grid-cols-1 gap-2 lg:grid-cols-[150px_400px] lg:gap-4">
                 <label>First Name</label>
                 <TextField.Root className="py-1 px-2">
                   <TextField.Input
                     placeholder="Your First Name"
                     size="3"
-                    defaultValue={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    defaultValue={username}
+                    {...register("customerName")}
                     radius="full"
                     disabled={isCheckingout}
                   />
@@ -89,8 +111,10 @@ const Checkout = () => {
                     radius="full"
                     size="3"
                     placeholder="Your Phone Number"
-                    defaultValue={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    defaultValue={phone}
+                    {...register("customerPhone", {
+                      pattern: phoneNumberRegex,
+                    })}
                     disabled={isCheckingout}
                   />
                 </TextField.Root>
@@ -102,12 +126,11 @@ const Checkout = () => {
                     radius="full"
                     size="3"
                     placeholder="Your Address"
-                    defaultValue={customerAddress}
-                    onChange={(e) => {
-                      setCustomerAddress(e.target.value);
-                    }}
+                    defaultValue={address}
+                    {...register("customerAddress")}
                     disabled={isCheckingout}
                   />
+
                   {!address && (
                     <Button
                       disabled={isLoadingAddress}
@@ -126,16 +149,14 @@ const Checkout = () => {
                   )}
                 </TextField.Root>
               </div>
-              <div className="mt-4">
-                <Button
-                  size="4"
-                  radius="full"
-                  onClick={handleCheckout}
-                  disabled={isCheckingout}
-                >
-                  Order Now From ${formattedTotalPrice}
-                </Button>
-              </div>
+              <Button
+                className="w-64"
+                size="4"
+                radius="full"
+                disabled={isCheckingout}
+              >
+                Order Now From ${formattedTotalPrice}
+              </Button>
             </form>
           </>
         )}

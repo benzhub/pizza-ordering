@@ -7,15 +7,17 @@ export const productSchema = z.object({
   thumb: z.string().min(1, "Thumb is required.").max(65535),
 });
 
+export const phoneNumberRegex = /^09\d{8}$/;
+
 export const orderSchema = z.object({
-  customerName: z.string(),
-  customerPhone: z.string(), 
-  customerAddress: z.string(),
+  customerName: z.string().min(3).max(255),
+  customerPhone: z.string().regex(phoneNumberRegex), 
+  customerAddress: z.string().min(5).max(255),
   cartItems: z.array(
     z.object({
-      unitPrice: z.number(),
-      productId: z.number(),
-      quantity: z.number().min(1),
+      unitPrice: z.number().min(1).max(9999),
+      productId: z.number().min(1).max(65535),
+      quantity: z.number().min(1).max(999),
     })
   ),
 });
