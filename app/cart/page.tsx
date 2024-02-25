@@ -21,7 +21,11 @@ const CartPage = () => {
 
   useEffect(() => {
     setCartItems(carts);
-    setIsLoading(false);
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timeout);
   }, [carts]);
 
   function handleClearCart() {

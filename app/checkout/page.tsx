@@ -52,7 +52,11 @@ const Checkout = () => {
 
   useEffect(() => {
     setFormattedTotalPrice(formatIntl(totalPrice));
-    setIsLoading(false);
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timeout);
   }, [totalPrice]);
 
   useEffect(() => {
