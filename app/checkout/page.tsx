@@ -9,7 +9,7 @@ import { fetchAddress } from "@/lib/features/user/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { formatIntl } from "@/utils/formatIntl";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Container, Heading, TextField } from "@radix-ui/themes";
+import { Box, Button, Container, Flex, Heading, TextField } from "@radix-ui/themes";
 import { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -77,6 +77,9 @@ const Checkout = () => {
 
   if (isLoading) {
     return <CheckoutSkeleton />;
+  }
+  if(isCheckingout) {
+    return <Container><Box className="flex justify-center items-center h-[20rem]"><Spinner style="h-20 w-20 block m-auto"/></Box></Container>
   }
 
   return (
