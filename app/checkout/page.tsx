@@ -35,7 +35,7 @@ const Checkout = () => {
   const isLoadingAddress = addressStatus === "loading";
   const totalPrice = useAppSelector(getTotalCartPrice);
   const cartItems = useAppSelector(getCarts).map((item) => ({
-    productId: Number(item.productId),
+    productId: parseInt(item.productId),
     unitPrice: item.unitPrice,
     quantity: item.quantity,
   }));
