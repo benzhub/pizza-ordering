@@ -79,7 +79,7 @@ const Checkout = () => {
     return <CheckoutSkeleton />;
   }
   if(isCheckingout) {
-    return <Container><Box className="flex justify-center items-center h-[20rem]"><Spinner style="h-20 w-20 block m-auto"/></Box></Container>
+    return <Container><Box className="flex justify-center items-center h-[20rem]"><Spinner size="h-20 w-20"/></Box></Container>
   }
 
   return (
