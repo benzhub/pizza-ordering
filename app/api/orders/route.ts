@@ -4,6 +4,7 @@ import { orderSchema } from "../../validationSchema";
 import { getServerSession, Session } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
 import { Status } from "@prisma/client";
+import PAGESIZE from "@/utils/pageSize";
 
 interface ModifiedSession extends Session {
   user: Session["user"] & {
@@ -64,15 +65,21 @@ export async function GET(request: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.json({}, { status: 401 });
 
+    const page = parseInt(request.nextUrl.searchParams.get("page") || "1");
     const typedSession = session as ModifiedSession;
     const orders = await prisma.order.findMany({
       where: { assignedToUserId: typedSession.user.id },
       include: { assignedOrderItem: true },
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
+      skip: (page - 1) * PAGESIZE,
+      take: PAGESIZE,
     });
-    return NextResponse.json(orders, { status: 200 });
+    const totalCount = await prisma.order.count({
+      where: { assignedToUserId: typedSession.user.id },
+    });
+    return NextResponse.json({ orders, totalCount }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch orders" },

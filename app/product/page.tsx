@@ -1,7 +1,7 @@
 "use client";
 import { Box, Container, Heading } from "@radix-ui/themes";
 import ProductList from "./_components/ProductList";
-import Pagination from "./Pagination";
+import Pagination from "../components/Pagination";
 import { useProducts } from "./_components/useProducts";
 import PAGESIZE from "@/utils/pageSize";
 

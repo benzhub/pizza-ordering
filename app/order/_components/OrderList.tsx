@@ -1,4 +1,3 @@
-"use client";
 import { formatDateString } from "@/utils/formatDateString";
 import {
   Status,
@@ -6,7 +5,6 @@ import {
   type OrderItem as OrderItemProps,
 } from "@prisma/client";
 import { Box, Flex, Heading, Table } from "@radix-ui/themes";
-import { useOrders } from "./useOrders";
 import { type OrderProps } from "./useOrders";
 import { formatIntl } from "@/utils/formatIntl";
 import { useEffect } from "react";
@@ -14,14 +12,18 @@ import toast from "react-hot-toast";
 import { Skeleton } from "@/app/components";
 import { SkeletonTheme } from "react-loading-skeleton";
 
-const OrderItem = () => {
-  const { orders, error, isLoading } = useOrders();
+interface Props {
+  orders: OrderProps[];
+  error: Error | null;
+  isLoading: boolean;
+}
 
+const OrderList = ({ orders, error, isLoading }: Props) => {  
   useEffect(() => {
     if (error) toast.error(error.message);
   }, [error]);
 
-  if (isLoading) return <OrderItemsSkeleton/>
+  if (isLoading) return <OrderListSkeleton />;
   return (
     <>
       <Heading as="h3" className="py-4">
@@ -29,14 +31,7 @@ const OrderItem = () => {
       </Heading>
       {/* Mobile */}
       <ul className="grid grid-cols-1 gap-8 mb-12 lg:hidden">
-        {orders?.map((order) => {
-          const totalPrice = order.assignedOrderItem.reduce(
-            (acc: number, val: OrderItemProps) =>
-              val.unitPrice * val.quantity + acc,
-            0
-          );
-          return <Mobile key={order.id} order={order} />;
-        })}
+        {orders?.toReversed().map((order) => <Mobile key={order.id} order={order} />)}
       </ul>
 
       {/* Desktop */}
@@ -51,7 +46,7 @@ const OrderItem = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {orders?.map((order) => {
+          {orders?.toReversed().map((order) => {
             return <Desktop key={order.id} order={order} />;
           })}
         </Table.Body>
@@ -137,62 +132,65 @@ const statuses: { [key in Status]: { label: string; className: string } } = {
   CANCEL: { label: "Cancel", className: "text-rose-500" },
 };
 
-
-const OrderItemsSkeleton = () => {
-  return <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
-  <Skeleton height="2rem" width="8rem" />
-  <Box className="lg:hidden">
-    <Flex direction="column" className="mt-6" gap="6">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <Box
-          key={index}
-          className="p-2 border-2 border-gray-200 rounded-lg shadow-[5px_5px_0px_0px_#ff6847eb]"
-        >
-          <Skeleton width="15rem" height="1.5rem" />
-          <hr className="text-white my-2 border-[1px]" />
-          <Flex direction="column" gap="3">
-            <Skeleton width="15rem" height="1.5rem" />
-            <Skeleton width="25rem" height="1.5rem" />
-            <Skeleton width="15rem" height="1.5rem" />
-          </Flex>
-          <hr className="text-white my-2 border-[1px]" />
-          <Flex justify="between">
-            <Box className="w-[15%]">
-              <Skeleton height="1.5rem" />
+const OrderListSkeleton = () => {
+  return (
+    <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
+      <Skeleton height="2rem" width="8rem" />
+      <Box className="lg:hidden">
+        <Flex direction="column" className="mt-6" gap="6">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Box
+              key={index}
+              className="p-2 border-2 border-gray-200 rounded-lg shadow-[5px_5px_0px_0px_#ff6847eb]"
+            >
+              <Skeleton width="15rem" height="1.5rem" />
+              <hr className="text-white my-2 border-[1px]" />
+              <Flex direction="column" gap="3">
+                <Skeleton width="15rem" height="1.5rem" />
+                <Skeleton width="25rem" height="1.5rem" />
+                <Skeleton width="15rem" height="1.5rem" />
+              </Flex>
+              <hr className="text-white my-2 border-[1px]" />
+              <Flex justify="between">
+                <Box className="w-[15%]">
+                  <Skeleton height="1.5rem" />
+                </Box>
+                <Box className="w-[15%]">
+                  <Skeleton height="1.5rem" />
+                </Box>
+              </Flex>
             </Box>
-            <Box className="w-[15%]">
-              <Skeleton height="1.5rem" />
-            </Box>
-          </Flex>
-        </Box>
-      ))}
-    </Flex>
-  </Box>
-  <Table.Root variant="surface" className="hidden lg:block mt-6">
-    <Table.Header className="text-lg">
-      <Table.Row>
-        {columns.map((column) => (
-          <Table.ColumnHeaderCell key={column.value}>
-            {column.label}
-          </Table.ColumnHeaderCell>
-        ))}
-      </Table.Row>
-    </Table.Header>
-    <Table.Body>
-      {Array.from({ length: 5 }).map((_, index) => (
-        <Table.Row key={index} align="center" className="text-lg">
-          {Array.from({length: 7}).map((_, idx)=> (<Table.Cell key={idx}>
-            <Skeleton height="1.5rem" width="3rem" />
-          </Table.Cell>))}
-        </Table.Row>
-      ))}
-    </Table.Body>
-  </Table.Root>
-</SkeletonTheme>
-}
+          ))}
+        </Flex>
+      </Box>
+      <Table.Root variant="surface" className="hidden lg:block mt-6">
+        <Table.Header className="text-lg">
+          <Table.Row>
+            {columns.map((column) => (
+              <Table.ColumnHeaderCell key={column.value}>
+                {column.label}
+              </Table.ColumnHeaderCell>
+            ))}
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Table.Row key={index} align="center" className="text-lg">
+              {Array.from({ length: 7 }).map((_, idx) => (
+                <Table.Cell key={idx}>
+                  <Skeleton height="1.5rem" width="3rem" />
+                </Table.Cell>
+              ))}
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table.Root>
+    </SkeletonTheme>
+  );
+};
 
 export const columnNames = columns.map((column) => column.value);
 
 export const dynamic = "force-dynamic";
 
-export default OrderItem;
+export default OrderList;
