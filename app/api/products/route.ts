@@ -3,10 +3,16 @@ import { productSchema } from "@/app/validationSchema";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../prisma/client";
+import PAGESIZE from "@/utils/pageSize";
 
 export async function GET(request: NextRequest) {
-  const products = await prisma.product.findMany({});
-  return NextResponse.json(products, { status: 200 });
+  const page = parseInt(request.nextUrl.searchParams.get("page") || "1");
+  const products = await prisma.product.findMany({
+    skip: (page - 1) * PAGESIZE,
+    take: PAGESIZE,
+  });
+  const totalCount = await prisma.product.count();
+  return NextResponse.json({products, totalCount}, { status: 200 });
 }
 
 export async function POST(request: NextRequest) {

@@ -1,14 +1,16 @@
-"use client";
 import { Skeleton } from "@/app/components";
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import { SkeletonTheme } from "react-loading-skeleton";
-import { Pizza as PizzaProp } from "./PizzaType";
+import { Pizza, Pizza as PizzaProp } from "./PizzaType";
 import { ProductItem } from "./ProductItem";
-import { useProducts } from "./useProducts";
 
-const ProductList = () => {
-  const { pizzas, error, isLoading } = useProducts();
+interface Props {
+  pizzas: Pizza[];
+  error: Error | null;
+  isLoading: boolean;
+}
 
+const ProductList = ({ pizzas, error, isLoading }: Props) => {
   if (isLoading) return <ProductListSkeleton />;
   if (error) return null;
   return (
@@ -25,11 +27,11 @@ const ProductListSkeleton = () => {
     <Box className="w-full">
       <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f8fafc">
         <Flex direction="column" gap="6" className="mt-4">
-          <ProductItemSkeleton/>
-          <ProductItemSkeleton/>
-          <ProductItemSkeleton/>
-          <ProductItemSkeleton/>
-          <ProductItemSkeleton/>
+          <ProductItemSkeleton />
+          <ProductItemSkeleton />
+          <ProductItemSkeleton />
+          <ProductItemSkeleton />
+          <ProductItemSkeleton />
         </Flex>
       </SkeletonTheme>
     </Box>
