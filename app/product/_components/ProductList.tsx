@@ -1,21 +1,21 @@
+"use client";
 import { Skeleton } from "@/app/components";
 import { Box, Flex, Grid } from "@radix-ui/themes";
+import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
-import { Pizza, Pizza as PizzaProp } from "./PizzaType";
+import { type Pizza } from "./PizzaType";
 import { ProductItem } from "./ProductItem";
+import { useProducts } from "./useProducts";
 
-interface Props {
-  pizzas: Pizza[];
-  error: Error | null;
-  isLoading: boolean;
-}
+const ProductList = ({ page }: { page: number }) => {
+  const { pizzas = [], error, isLoading } = useProducts(page);
 
-const ProductList = ({ pizzas, error, isLoading }: Props) => {
+
   if (isLoading) return <ProductListSkeleton />;
   if (error) return null;
   return (
     <ul className="divide-y-[1px] divide-stone-200/50">
-      {pizzas?.map((pizza: PizzaProp) => (
+      {pizzas?.map((pizza: Pizza) => (
         <ProductItem key={pizza.id} pizza={pizza} />
       ))}
     </ul>

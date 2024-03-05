@@ -3,17 +3,14 @@ import { Button, Flex, Text } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { useProducts } from "../product/_components/useProducts";
+import PAGESIZE from "@/utils/pageSize";
 
-export interface Props {
-  itemCount: number;
-  pageSize: number;
-  currentPage: number;
-}
-
-const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
+const Pagination = ({ currentPage }: {currentPage: number}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pageCount = Math.ceil(itemCount / pageSize);
+  const { totalCount  } = useProducts(currentPage)
+  const pageCount = Math.ceil(totalCount / PAGESIZE);
   if (pageCount <= 1) return null;
 
   const changePage = (page: number) => {

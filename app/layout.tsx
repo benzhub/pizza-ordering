@@ -1,6 +1,6 @@
 import { ScrollArea, Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -27,7 +27,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryClientProvider>
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <AuthProvider>
             <StoreProvider>
               <Theme appearance="dark" accentColor="red" grayColor="slate">
