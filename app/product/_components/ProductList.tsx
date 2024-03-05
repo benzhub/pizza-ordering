@@ -1,24 +1,33 @@
 "use client";
 import { Skeleton } from "@/app/components";
 import { Box, Flex, Grid } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { type Pizza } from "./PizzaType";
 import { ProductItem } from "./ProductItem";
 import { useProducts } from "./useProducts";
+import Pagination from "@/app/components/Pagination";
+import PAGESIZE from "@/utils/pageSize";
 
 const ProductList = ({ page }: { page: number }) => {
-  const { pizzas = [], error, isLoading } = useProducts(page);
-
+  const { pizzas = [], error, isLoading, totalCount } = useProducts(page);
 
   if (isLoading) return <ProductListSkeleton />;
   if (error) return null;
   return (
-    <ul className="divide-y-[1px] divide-stone-200/50">
-      {pizzas?.map((pizza: Pizza) => (
-        <ProductItem key={pizza.id} pizza={pizza} />
-      ))}
-    </ul>
+    <>
+      <ul className="divide-y-[1px] divide-stone-200/50">
+        {pizzas?.map((pizza: Pizza) => (
+          <ProductItem key={pizza.id} pizza={pizza} />
+        ))}
+      </ul>
+      <Box className="flex justify-center py-6">
+        <Pagination
+          itemCount={totalCount}
+          pageSize={PAGESIZE}
+          currentPage={page}
+        />
+      </Box>
+    </>
   );
 };
 
