@@ -1,10 +1,9 @@
-import { Box, Container, Heading } from "@radix-ui/themes";
+import { Container, Heading } from "@radix-ui/themes";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import Pagination from "../components/Pagination";
 import ProductList from "./_components/ProductList";
 import { getProducts } from "./_components/useProducts";
 
@@ -20,9 +19,6 @@ const ProductPage = async ({searchParams}: {searchParams: { page: string }}) => 
       <Heading as="h3">Products List</Heading>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ProductList page={page} />
-        <Box className="flex justify-center py-6">
-          <Pagination currentPage={page} />
-        </Box>
       </HydrationBoundary>
     </Container>
   );

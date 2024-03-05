@@ -2,8 +2,19 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-      domains: ['images.pexels.com', 's.gravatar.com'],
-    }
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'images.pexels.com',
+          pathname: '**',
+        },
+        {
+          protocol: 'https',
+          hostname: 's.gravatar.com',
+          pathname: '**',
+        },
+      ],
+    },
 };
 
 export default nextConfig;
