@@ -10,6 +10,8 @@ services:
       - 3000:3000
     depends_on:
       - db
+    volumes: 
+      - .:/app
     command: ./docker-entrypoint.sh
   db:
     image: mysql:latest
