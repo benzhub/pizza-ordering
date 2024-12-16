@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "db:up": "echo 'init' | npx prisma migrate dev",
     "server": "json-server --watch app/data/pizzas.json --port 9999"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
