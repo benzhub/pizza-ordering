@@ -5,14 +5,13 @@ services:
     container_name: pizza-web
     build:
       context: .
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile.prod
     ports:
       - 3000:3000
     depends_on:
       - db
-    volumes: 
-      - .:/app
-    command: ./docker-entrypoint.sh dev
+    command: ./docker-entrypoint.sh prod
+    restart: unless-stopped
   db:
     image: mysql:latest
     container_name: pizza-mysql
@@ -25,6 +24,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - pizza-app:/data/db
+    restart: unless-stopped
 
 volumes:
   pizza-app:
