@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
   
   relationMode = "prisma"
@@ -28,13 +28,13 @@ model Product {
 
 model OrderItem {
   id                  String   @id @default(cuid())
-  unitPrice           Int      @db.Int
-  quantity            Int      @db.Int
+  unitPrice           Int
+  quantity            Int
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
   assignedToOrderId   String   @db.VarChar(255)
   assignedToOrder     Order    @relation(fields: [assignedToOrderId], references: [id])
-  assignedToProductId Int      @db.Int
+  assignedToProductId Int
   assignedToProduct   Product  @relation(fields: [assignedToProductId], references: [id])
 
   @@index([assignedToOrderId, assignedToProductId])
